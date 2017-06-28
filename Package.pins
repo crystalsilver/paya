@@ -68,6 +68,12 @@
       "version": "16.0.1"
     },
     {
+      "package": "Yams",
+      "reason": null,
+      "repositoryURL": "https://github.com/jpsim/Yams.git",
+      "version": "0.3.2"
+    },
+    {
       "package": "swift-markdown",
       "reason": null,
       "repositoryURL": "https://github.com/stephenwzl/swift-markdown.git",

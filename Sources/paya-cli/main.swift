@@ -1,20 +1,13 @@
-import Kitura
 import paya_core
+import Foundation
 
-let router = Router()
+let argv = CommandLine.arguments
 
-let arvc = CommandLine.arguments
-
-for i in arvc {
+for i in argv {
   print("argument: \(i)")
 }
 
-router.get("/") {
-  request, response, next in
-  response.send("hello world")
-  next()
-}
+let p = Process().currentDirectoryPath
 
-Kitura.addHTTPServer(onPort: 3000, with: router)
-
-Kitura.run()
+Paya.setWorkerDirectory(directory: p)
+payaCreateTemplateProject(dir: nil)

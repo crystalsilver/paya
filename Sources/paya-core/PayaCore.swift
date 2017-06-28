@@ -4,15 +4,27 @@
 //
 //  Created by stephenw on 2017/6/27.
 //
+import Foundation
+import Yams
 
-let PAYA_DEFAULT_THEME_NAME = "paya-classic"
+let PAYA_DEFAULT_THEME_NAME   = "paya-classic"
+let PAYA_DEFAULT_CONFIG_NAME  = ".payaconfig.yml"
 public typealias PayaRenderAction = ([String: AnyObject?], Int) -> Void
+
+func payaDebugPrint(info: String) {
+  debugPrint("[Paya DEBUG \(Date().description)]: \(info)")
+}
+
+func payaErrorPrint(message: String) {
+  print("[Paya Error \(Date().description)]: \(message)")
+}
 
 public class Paya {
   private static let sharedInstance = Paya()
   private var generators = [PayaGenerator]()
   private var theme: PayaTheme = PayaTheme(name: PAYA_DEFAULT_THEME_NAME, folder: PAYA_DEFAULT_THEME_NAME)
-  private var workerDIR = "./"
+  /// default workerDIR is current process's directory
+  private var workerDIR = Process().currentDirectoryPath
   private var payaConfig = [String: AnyObject?]()
   
   private init() {}
@@ -33,13 +45,24 @@ public class Paya {
   /// - Parameter directory: absolute directory string
   public static func setWorkerDirectory(directory: String) {
     sharedInstance.workerDIR = directory
+    sharedInstance.readConfiguration()
   }
   
-  /// set default configuration
-  ///
-  /// - Parameter config: key valued config
-  public static func setConfiguration(config: [String: AnyObject?]) {
-    sharedInstance.payaConfig = config
+  /// this method was designed to be invoked automatically by setWorkerDirectory
+  func readConfiguration() {
+    let configFilePath = self.workerDIR + "/\(PAYA_DEFAULT_CONFIG_NAME)"
+    let configStr = try? String(contentsOfFile: configFilePath, encoding: String.Encoding.utf8)
+    if configStr == nil || configStr!.isEmpty {
+      payaDebugPrint(info: "can not read config file")
+      payaErrorPrint(message: "missing config file")
+      exit(EXIT_FAILURE)
+    }
+    let confg = try! Yams.load(yaml: configStr!) as? [String: AnyObject?]
+    for (key, value) in confg! {
+      let a = value is [String : String]
+      payaDebugPrint(info: "value is dic type:\(a)")
+      payaDebugPrint(info: "\(key)")
+    }
   }
 }
 
