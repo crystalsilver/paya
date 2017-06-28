@@ -57,11 +57,13 @@ public class Paya {
       payaErrorPrint(message: "missing config file")
       exit(EXIT_FAILURE)
     }
-    let confg = try! Yams.load(yaml: configStr!) as? [String: AnyObject?]
-    for (key, value) in confg! {
-      let a = value is [String : String]
-      payaDebugPrint(info: "value is dic type:\(a)")
-      payaDebugPrint(info: "\(key)")
+    do {
+      let confg = try Yams.load(yaml: configStr!) as? [String: AnyObject?]
+      if confg != nil {
+        
+      }
+    } catch {
+      return
     }
   }
 }

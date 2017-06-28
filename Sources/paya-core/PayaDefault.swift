@@ -52,5 +52,4 @@ public func payaCreateTemplateProject(dir: String?) {
   print("downloading default theme...")
   let output = executeShellCommand(cmd: "git", argv: ["clone", PAYA_DEFAULT_THEME_REPO, "theme/\(PAYA_DEFAULT_THEME_NAME)"])
   print(output!)
-  
 }

@@ -10,4 +10,4 @@ for i in argv {
 let p = Process().currentDirectoryPath
 
 Paya.setWorkerDirectory(directory: p)
-payaCreateTemplateProject(dir: nil)
+//payaCreateTemplateProject(dir: nil)
