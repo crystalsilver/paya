@@ -38,7 +38,17 @@ if argc <= 1 {
 let action = argv[1].removedPrefixString()
 
 switch action {
-  case "init": break
+  case "init":
+    payaCreateTemplateProject(dir: nil)
+    break
+  case "server":
+    if argc >= 3 {
+      let port = Int(argv[2])
+      Paya.server(port: port)
+    } else {
+      Paya.server(port: nil)
+    }
+    break;
   case "help":
     printHelpers()
     break

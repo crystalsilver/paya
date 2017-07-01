@@ -42,7 +42,7 @@ private func executeShellCommand(cmd: String, argv: [String]) -> String? {
 }
 
 public func payaCreateTemplateProject(dir: String?) {
-  let currentDirectory = dir != nil ? dir! : Process().currentDirectoryPath
+  let currentDirectory = dir != nil ? dir! : GlobalPayaInfo.currentDir
   let fileManager = FileManager.default
   print("creating source folder...")
   try! fileManager.createDirectory(atPath: "\(currentDirectory)/source", withIntermediateDirectories: true, attributes: nil)

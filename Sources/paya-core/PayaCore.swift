@@ -6,6 +6,7 @@
 //
 import Foundation
 import Yams
+import Kitura
 
 public struct PayaSharedInfo {
   var processInfo: ProcessInfo
@@ -80,6 +81,19 @@ public class Paya {
       payaErrorPrint(message: "parse config file error")
       exit(EXIT_FAILURE)
     }
+  }
+  
+  public static func server(port: Int?) {
+    let listenPort = port == nil ? 3000 : port!
+    let router = Router()
+    router.all() {
+      req, res, next in
+      res.send("hello world")
+      next()
+    }
+    Kitura.addHTTPServer(onPort: listenPort, with: router)
+    print("paya server is running at http://localhost:\(listenPort)")
+    Kitura.run()
   }
 }
 
