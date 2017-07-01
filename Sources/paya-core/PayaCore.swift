@@ -7,6 +7,17 @@
 import Foundation
 import Yams
 
+public struct PayaSharedInfo {
+  var processInfo: ProcessInfo
+  var currentDir: String
+  init() {
+    processInfo = ProcessInfo.processInfo
+    currentDir = Process().currentDirectoryPath
+  }
+}
+
+public let GlobalPayaInfo = PayaSharedInfo.init()
+
 let PAYA_DEFAULT_THEME_NAME   = "paya-classic"
 let PAYA_DEFAULT_CONFIG_NAME  = ".payaconfig.yml"
 public typealias PayaRenderAction = ([String: AnyObject?], Int) -> Void
@@ -58,12 +69,16 @@ public class Paya {
       exit(EXIT_FAILURE)
     }
     do {
-      let confg = try Yams.load(yaml: configStr!) as? [String: AnyObject?]
-      if confg != nil {
-        
+      let config = try Yams.load(yaml: configStr!) as? [String: AnyObject?]
+      if config != nil {
+        self.payaConfig = config!
+      } else {
+        payaErrorPrint(message: "some error occurred when loading config")
+        exit(EXIT_FAILURE)
       }
     } catch {
-      return
+      payaErrorPrint(message: "parse config file error")
+      exit(EXIT_FAILURE)
     }
   }
 }
